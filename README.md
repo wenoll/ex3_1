@@ -1,5 +1,9 @@
 # ex3_1
 Android Development Project Practice Experiment3
+##notebook使用
+![Screenshot 2025-05-07 083325](https://github.com/user-attachments/assets/b696dee7-8e2c-4104-ada4-f98257cbd960)
+
+
 ```python
 %matplotlib inline
 import pandas as pd
