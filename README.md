@@ -381,11 +381,53 @@ plot_with_std(x, y2.values, stds2, ax2, title % 'revenues', 'Revenue (millions)'
 fig.set_size_inches(14, 4)
 fig.tight_layout()
 ```
-
-
-​    
+ 
 ![png](output_30_0.png)
 ​    
 
 
 不同公司之间的收入和利润差距惊人
+
+## 完成一张图同时画利润和收入
+```python
+# 解决中文显示问题
+plt.rcParams["font.sans-serif"] = ["SimHei"]  # 设置默认中文字体（黑体）
+plt.rcParams["axes.unicode_minus"] = False     # 正确显示负号
+# 在同一张图中绘制利润和收入趋势（使用共享X轴的双Y轴）
+fig, ax1 = plt.subplots(figsize=(14, 7))
+
+# 绘制利润及其置信区间
+color = 'tab:blue'
+ax1.set_xlabel('年份')
+ax1.set_ylabel('利润 (百万美元)', color=color)
+line1 = ax1.plot(x, y1, 'b-', label='平均利润')
+ax1.fill_between(x, y1 - stds1, y1 + stds1, color='b', alpha=0.2)
+ax1.tick_params(axis='y', labelcolor=color)
+
+# 创建第二个Y轴用于绘制收入
+ax2 = ax1.twinx()
+color = 'tab:red'
+ax2.set_ylabel('收入 (百万美元)', color=color)
+line2 = ax2.plot(x, y2, 'r-', label='平均收入')
+ax2.fill_between(x, y2 - stds2, y2 + stds2, color='r', alpha=0.2)
+ax2.tick_params(axis='y', labelcolor=color)
+
+# 添加标题和图例
+plt.title('1955-2005年财富500强公司平均利润和收入趋势')
+lines = line1 + line2
+labels = [l.get_label() for l in lines]
+plt.legend(lines, labels, loc='upper left')
+
+# 设置x轴刻度为整数年份
+plt.xticks(range(min(x), max(x) + 1, 5))
+plt.grid(True, linestyle='--', alpha=0.7)
+
+plt.tight_layout()
+plt.show()
+
+# 计算并打印利润和收入的相关系数
+correlation = df['profit'].corr(df['revenue'])
+print(f"\n利润和收入的皮尔逊相关系数: {correlation:.4f}")
+```
+
+![image](https://github.com/user-attachments/assets/cc1c04a3-b179-42e2-a5b6-e31b67c800dc)
